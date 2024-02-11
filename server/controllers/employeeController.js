@@ -3,10 +3,10 @@ const express = require("express")
 const router = express.Router()
 
 
-router.get("/employees", async (req,res) => {
+router.get("/", async (req,res) => {
     try {
-        const employees = await employeeService.getAllEmployees();
-        res.send(employees);
+        const result = await employeeService.getAllEmployees();
+        res.send(result);
       } catch (error) {
         res.send(error);
       }

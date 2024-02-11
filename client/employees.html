@@ -1,4 +1,8 @@
 <html>
+    <head>
+        <title>Employees page</title>
+        <link rel="stylesheet" href="shifts.css">
+    </head>
     <body onload="getEmployees()">
         <h1>Employees Page</h1>
         <h2 id="name"></h2>
@@ -14,26 +18,36 @@
         <script>
             const url = 'http://localhost:8000/employees';
 
-            async function addEmployeesToTable(employees) {
+            
+            function addEmployeesToTable(result) {
                 const table = document.getElementById("table");
+                const { employees, employeesWithShifts,departments } = result;
 
                 employees.forEach(emp => {
                     const empTr = document.createElement("tr");
                     const empTdName = document.createElement("td");
                     const emptdDepartment = document.createElement("td");
-                    const emptdShifts= document.createElement("td");
+                    const emptdShifts = document.createElement("td");
 
-                    empTdName.innerText=emp.firstName+ ' '+ emp.lastName;
-                    emptdDepartment.innerText = emp.departmentID;
+                    const shifts = employeesWithShifts.find(item => item.employeeId === emp._id).shifts;
+                    // ^ Find the shifts corresponding to the current employee by matching employee IDs
+
+                    const nameDepartment = departments.find( dep => dep._id ===emp.departmentID).name;
+                    //^Find the name's department of the current employee by matching employee IDs
+
+                    empTdName.innerText = emp.firstName + ' ' + emp.lastName;
+                    emptdDepartment.innerText = nameDepartment;
+                    emptdShifts.innerText = shifts.join(", "); // Assuming shifts is an array of strings
 
                     empTr.appendChild(empTdName);
                     empTr.appendChild(emptdDepartment);
                     empTr.appendChild(emptdShifts);
 
-                    
                     table.appendChild(empTr);
                 });
             }
+           
+
 
             async function getEmployees() {
                 const username = sessionStorage.getItem("name")
@@ -48,10 +62,8 @@
                     headers: { 'x-access-token': token },
                 });
 
-                const employees = await resp.json();
-                console.log(employees);
-
-                addEmployeesToTable(employees);
+                const result = await resp.json();
+                addEmployeesToTable(result);
             }
         </script>
     </body>

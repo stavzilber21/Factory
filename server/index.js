@@ -11,10 +11,10 @@ app.use(cors())
 
 connectDB();
 
-// const productsController = require("./Controllers/productsController");
+const employeesController = require("./controllers/employeeController");
 const userController = require("./controllers/userController");
 
-// app.use("/products", productsController);
+app.use("/employees", employeesController);
 app.use("/auth", userController);
 
 app.listen(port, () => {
