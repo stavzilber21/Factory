@@ -1,0 +1,58 @@
+<html>
+    <body onload="getEmployees()">
+        <h1>Employees Page</h1>
+        <h2 id="name"></h2>
+        <br>
+        <table id="table" border="1">
+        <tr>
+            <th>Full Name</th>
+            <th>Department</th>
+            <th>Shifts</th>
+        </tr>
+        </table>
+
+        <script>
+            const url = 'http://localhost:8000/employees';
+
+            async function addEmployeesToTable(employees) {
+                const table = document.getElementById("table");
+
+                employees.forEach(emp => {
+                    const empTr = document.createElement("tr");
+                    const empTdName = document.createElement("td");
+                    const emptdDepartment = document.createElement("td");
+                    const emptdShifts= document.createElement("td");
+
+                    empTdName.innerText=emp.firstName+ ' '+ emp.lastName;
+                    emptdDepartment.innerText = emp.departmentID;
+
+                    empTr.appendChild(empTdName);
+                    empTr.appendChild(emptdDepartment);
+                    empTr.appendChild(emptdShifts);
+
+                    
+                    table.appendChild(empTr);
+                });
+            }
+
+            async function getEmployees() {
+                const username = sessionStorage.getItem("name")
+                document.getElementById("name").innerText = username;
+                const token = sessionStorage['token'];
+
+                if (!token) {
+                        window.location.href = "./login.html"
+                }
+                const resp = await fetch(url, {
+                    method: 'GET',
+                    headers: { 'x-access-token': token },
+                });
+
+                const employees = await resp.json();
+                console.log(employees);
+
+                addEmployeesToTable(employees);
+            }
+        </script>
+    </body>
+</html>

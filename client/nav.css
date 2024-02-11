@@ -1,0 +1,54 @@
+
+nav, header, footer {
+    display: block;
+}
+
+body{
+    line-height: 1;
+    margin: 0;
+}
+
+*{
+    box-sizing: border-box;
+}
+/*Nav bar*/
+
+nav{
+    width: 100%;
+    margin: 0;
+}
+
+/* Styles for the main navigation bar */
+
+nav ul{
+    background-color: #eee;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+/* Styles for each list item in the navigation bar */
+ul.topnav li {
+    list-style: none;
+    float: left;
+}
+
+/* Styles for each anchor tag within the list items */
+ul.topnav li a {
+    display: block;
+    text-decoration: none;
+    min-height: 16px;
+    text-align: center;
+    padding: 14px;
+    text-transform: uppercase;
+    color: #666;
+}
+
+ul.topnav li a:hover {
+    background-color: #0080ff;
+    color: #fff;
+}
+
+ul.topnav li.dropdownIcon{
+    display: none;
+}
