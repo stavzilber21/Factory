@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Employee page</title>
+    <link rel="stylesheet" href="shifts.css">
+</head>
+<body onload="getData()">
+
+<div class="form-container">
+    <h1>Edit Employees Page</h1>
+    <h2 id="name"></h2>
+
+    <form id="editForm">
+        <label for="firstName">First Name:</label><br>
+        <input type="text" id="firstName" name="firstName"><br><br>
+
+        <label for="lastName">Last Name:</label><br>
+        <input type="text" id="lastName" name="lastName"><br><br>
+
+        <label for="year">Year:</label><br>
+        <input type="text" id="year" name="year"><br><br>
+
+        <label for="department">Department:</label><br>
+        <select id="department" name="department"></select><br><br>
+
+        <input type="submit" value="Update">
+    </form>
+    <br>
+    <button onclick="deleteEmployee()">Delete Employee</button>
+</div>
+<script>
+    function deleteEmployee() {
+        // Add your deleteEmployee logic here
+    }
+
+    function getQueryParam(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    async function getData() {
+        //get the name of user
+        const username = sessionStorage.getItem("name");
+        document.getElementById("name").innerText = username;
+        console.log(username);
+        //get the data of the employee from the url
+        const firstName = getQueryParam('firstName');
+        const lastName = getQueryParam('lastName');
+        const year = getQueryParam('year');
+        const department = getQueryParam('department');
+        
+        // Populate form fields with employee data
+        document.getElementById('firstName').value = firstName;
+        document.getElementById('lastName').value = lastName;
+        document.getElementById('year').value = year;
+
+        const departmentDropdown = document.getElementById('department');
+        const departmentNames = getQueryParam('names');
+        
+        if (departmentNames) {
+            departmentNames.split(',').forEach(name => {
+                const option = document.createElement('option');
+                option.textContent = name;
+                option.value = name;
+                departmentDropdown.add(option);
+            });
+            departmentDropdown.value = department;
+            
+        }
+        
+        // Add event listener for form submission
+        const form = document.getElementById("editForm");
+        form.addEventListener("submit", function(event) {
+            event.preventDefault(); // Prevent default form submission
+            updateData(); // Call updateData function
+        });
+    }
+
+    async function updateData() {
+        console.log("11111");
+        const id = getQueryParam('id');
+        const firstName = document.getElementById('firstName').value;
+        const lastName= document.getElementById('lastName').value;
+        const startWorkYear = document.getElementById('year').value;
+        const departmentID = document.getElementById('department').value;
+        console.log("222222");
+        console.log(departmentID);
+        const token = sessionStorage.getItem("token");
+        if (!token) {
+            window.location.href = "./login.html";
+        }
+        
+        const resp = await fetch("http://localhost:8000/employees/" + id, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "x-access-token": token
+            },
+            body: JSON.stringify({
+                firstName, lastName, startWorkYear, departmentID
+            })
+        });
+        console.log(resp);
+        const response = await resp.json();
+        location.href = "./employees.html";
+        
+    }
+</script>
+</body>
+</html>

@@ -1,70 +1,144 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>Employees page</title>
-        <link rel="stylesheet" href="shifts.css">
-    </head>
-    <body onload="getEmployees()">
-        <h1>Employees Page</h1>
-        <h2 id="name"></h2>
-        <br>
-        <table id="table" border="1">
+<head>
+    <title>Employees page</title>
+    <link rel="stylesheet" href="shifts.css">
+
+</head>
+<body onload="getEmployees()">
+    <h1>Employees Page</h1>
+    <h2 id="name"></h2>
+    <br>
+    <table id="table" border="1">
         <tr>
             <th>Full Name</th>
             <th>Department</th>
             <th>Shifts</th>
         </tr>
+    </table>
+    <Br>
+
+    <div class="popup" id="popup">
+        
+        <table id="table_shifts" border="1">
+            <tr>
+                <th>Date</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+            </tr>
         </table>
-
-        <script>
-            const url = 'http://localhost:8000/employees';
-
-            
-            function addEmployeesToTable(result) {
-                const table = document.getElementById("table");
-                const { employees, employeesWithShifts,departments } = result;
-
-                employees.forEach(emp => {
-                    const empTr = document.createElement("tr");
-                    const empTdName = document.createElement("td");
-                    const emptdDepartment = document.createElement("td");
-                    const emptdShifts = document.createElement("td");
-
-                    const shifts = employeesWithShifts.find(item => item.employeeId === emp._id).shifts;
-                    // ^ Find the shifts corresponding to the current employee by matching employee IDs
-
-                    const nameDepartment = departments.find( dep => dep._id ===emp.departmentID).name;
-                    //^Find the name's department of the current employee by matching employee IDs
-
-                    empTdName.innerText = emp.firstName + ' ' + emp.lastName;
-                    emptdDepartment.innerText = nameDepartment;
-                    emptdShifts.innerText = shifts.join(", "); // Assuming shifts is an array of strings
-
-                    empTr.appendChild(empTdName);
-                    empTr.appendChild(emptdDepartment);
-                    empTr.appendChild(emptdShifts);
-
-                    table.appendChild(empTr);
-                });
-            }
-           
+        <button onclick="closePopup()">Close</button>
+    </div>
 
 
-            async function getEmployees() {
-                const username = sessionStorage.getItem("name")
-                document.getElementById("name").innerText = username;
-                const token = sessionStorage['token'];
+    <script>
+        const url = 'http://localhost:8000/employees';
 
-                if (!token) {
-                        window.location.href = "./login.html"
-                }
-                const resp = await fetch(url, {
-                    method: 'GET',
-                    headers: { 'x-access-token': token },
+        
+        function addEmployeesToTable(result) {
+            const table = document.getElementById("table");
+            const { employees, employeesWithShifts, departments } = result;
+
+            employees.forEach(emp => {
+                const empTr = document.createElement("tr");
+                const empTdName = document.createElement("td");
+                const emptdDepartment = document.createElement("td");
+                const buttonTd = document.createElement("td");
+                const button = document.createElement("button");
+                button.textContent = "Show Shifts";
+              
+                const shifts = employeesWithShifts.find(item => item.employeeId === emp._id).shifts;
+                // ^ Find the shifts corresponding to the current employee by matching employee IDs
+                button.addEventListener("click", function() {
+                    openPopup();
+                    showShifts(shifts);
                 });
 
-                const result = await resp.json();
-                addEmployeesToTable(result);
+
+                const nameDepartment = departments.find(dep => dep._id === emp.departmentID).name;
+                //^Find the name's department of the current employee by matching employee IDs
+
+                empTdName.addEventListener("click", function() {
+                    const names = departments.map(dep => dep.name);
+                    console.log(names);
+                    window.location.href = "./editEmployee.html?firstName=" + emp.firstName + "&lastName=" + emp.lastName + "&year=" + emp.startWorkYear +"&department="+nameDepartment+ "&id=" + emp._id + "&names=" + names;
+                });
+     
+                empTdName.innerText = emp.firstName + ' ' + emp.lastName;
+                emptdDepartment.innerText = nameDepartment;
+
+                buttonTd.appendChild(button);
+                empTr.appendChild(empTdName);
+                empTr.appendChild(emptdDepartment);
+                empTr.appendChild(buttonTd);
+
+                table.appendChild(empTr);
+            });
+        }
+        function showShifts(shifts) {
+            const table = document.getElementById("table_shifts");
+            var rowCount = table.rows.length;
+            for (var i = rowCount - 1; i > 0; i--) {
+                table.deleteRow(i);
             }
-        </script>
-    </body>
+            // Show table titles
+            table.getElementsByTagName('tr')[0].style.display = 'table-row';
+  
+
+            shifts.forEach(shift => {
+                const shiftRow = document.createElement("tr");
+                const shiftDateCell = document.createElement("td");
+                const shiftStartTimeCell = document.createElement("td");
+                const shiftEndTimeCell = document.createElement("td");
+                shiftDateCell.textContent = shift.date;
+                shiftStartTimeCell.textContent = shift.startingHour;
+                shiftEndTimeCell.textContent = shift.endingHour;
+                shiftRow.appendChild(shiftDateCell);
+                shiftRow.appendChild(shiftStartTimeCell);
+                shiftRow.appendChild(shiftEndTimeCell);
+                table.appendChild(shiftRow);
+            });
+        }
+ 
+        function openPopup() {
+            document.getElementById("popup").style.display = "block";
+            // Show close button
+            document.querySelector("#popup button").style.display = "block";
+            // Show table titles
+            document.querySelectorAll("#table_shifts th").forEach(title => {
+                title.style.display = "table-cell";
+            });
+        }
+
+
+        function closePopup() {
+            document.getElementById("popup").style.display = "none";
+            // Empty the table and hide table titles
+            var table = document.getElementById("table_shifts");
+            var rowCount = table.rows.length;
+            for (var i = rowCount - 1; i > 0; i--) {
+                table.deleteRow(i);
+            }
+            table.getElementsByTagName('tr')[0].style.display = 'none';
+        }
+       
+
+        async function getEmployees() {
+            const username = sessionStorage.getItem("name")
+            document.getElementById("name").innerText = username;
+            const token = sessionStorage['token'];
+
+            if (!token) {
+                    window.location.href = "./login.html"
+            }
+            const resp = await fetch(url, {
+                method: 'GET',
+                headers: { 'x-access-token': token },
+            });
+
+            const result = await resp.json();
+            addEmployeesToTable(result);
+        }
+    </script>
+</body>
 </html>

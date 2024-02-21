@@ -5,5 +5,14 @@ const getAllEmployees = () => {
     return Employee.find();
   };
 
+// Update
+const updateEmployee =(id, obj) => {
+    return Employee.findByIdAndUpdate(id, obj);
+};
 
-  module.exports = {getAllEmployees};
+// Delete
+const deleteEmployee = (id) => {
+  return Employee.findByIdAndDelete(id);
+};
+
+module.exports = {getAllEmployees,updateEmployee,deleteEmployee};
