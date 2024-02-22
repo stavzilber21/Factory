@@ -13,9 +13,11 @@ connectDB();
 
 const employeesController = require("./controllers/employeeController");
 const userController = require("./controllers/userController");
+const shiftsController = require("./controllers/shiftsController");
 
 app.use("/employees", employeesController);
 app.use("/auth", userController);
+app.use("/shifts", shiftsController);
 
 app.listen(port, () => {
     console.log(`Server is running at http://127.0.0.1:${port}`);

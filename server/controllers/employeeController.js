@@ -22,12 +22,24 @@ router.get("/:department", async (req,res) => {
     }
 })
 
+// Update a employee
 router.put('/:id', async (req, res) => {
   try {
     
     const { id } = req.params;
     const obj = req.body;
     const result = await employeeService.updateEmployee(id,obj);
+    res.send(result);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+// Delete a employee
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await employeeService.deleteEmployee(id);
     res.send(result);
   } catch (error) {
     res.send(error);

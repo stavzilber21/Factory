@@ -28,8 +28,12 @@ const updateEmployee = async(id, obj) => {
   return { 'response': 'updated' }
   };
 
-  const deleteEmployee = (id) => {
-    return employeesRep.deleteEmployee(id);
+  const deleteEmployee = async(id) => {
+    // delete the shifts of this employee
+    const answer = await employeeShiftRep.deleteEmployeeShifts(id); 
+    //delete the employee from employees colletion
+    const result = await employeesRep.deleteEmployee(id);
+    return { 'response': 'deleted' }
   };
 
 

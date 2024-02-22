@@ -38,6 +38,7 @@ input[type="submit"], button {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-weight: bold;
 }
 
 input[type="submit"]:hover, button:hover {
