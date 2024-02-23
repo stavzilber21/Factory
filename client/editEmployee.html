@@ -220,7 +220,8 @@
             })
         });
         const response = await resp.json();
-        console.log(response);
+         // Remove the selected shift from the dropdown
+        shiftToAdd.remove(selectedOption.index);
     }
 
     async function updateData() {

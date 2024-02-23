@@ -15,4 +15,12 @@ const deleteEmployee = (id) => {
   return Employee.findByIdAndDelete(id);
 };
 
-module.exports = {getAllEmployees,updateEmployee,deleteEmployee};
+// Create
+const addEmployee = async (obj) => {
+  const employee = new Employee(obj);
+  await employee.save();
+  return {'employeeID' : employee._id}; 
+}
+
+
+module.exports = {getAllEmployees,updateEmployee,deleteEmployee,addEmployee};

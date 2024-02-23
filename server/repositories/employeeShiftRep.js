@@ -19,10 +19,10 @@ const addShiftToEmployee = async (employeeID, shiftID) => {
           emp.shifts.push(shiftID);
           // Save the updated employee document
           await emp.save();
-          console.log(`Shift ${shiftID} added to employee ${employeeID}.`);
+          
           return { 'response': 'added'};
       } else {
-          console.log(`Employee with ID ${employeeID} not found.`);
+          
       }
       
   } catch (error) {
@@ -30,4 +30,9 @@ const addShiftToEmployee = async (employeeID, shiftID) => {
   }
 }
 
-module.exports = {getShiftsById,deleteEmployeeShifts,addShiftToEmployee};
+const addEmployeeAndShifts = (obj) => {
+  const employee = new eShift(obj);
+  return employee.save();
+}
+
+module.exports = {getShiftsById,deleteEmployeeShifts,addShiftToEmployee,addEmployeeAndShifts};

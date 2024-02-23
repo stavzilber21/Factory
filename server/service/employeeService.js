@@ -35,6 +35,8 @@ const updateEmployee = async(id, obj) => {
     const result = await employeesRep.deleteEmployee(id);
     return { 'response': 'deleted' }
   };
+  const addEmployee = (obj) => {
+    return employeesRep.addEmployee(obj);
+  };
 
-
-  module.exports = {getAllEmployees,updateEmployee,getIdByNameDepartment,deleteEmployee};
+  module.exports = {getAllEmployees,updateEmployee,getIdByNameDepartment,deleteEmployee,addEmployee};

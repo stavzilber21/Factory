@@ -16,5 +16,11 @@ const getIdByNameDepartment =async (name) =>{
     return department._id;
 }
 
+const getNamesDepartments =async ()=>{
+  const departments =await Department.find();
+  const names = departments.map(dep => dep.name);
+  return names;
+}
 
-  module.exports = {getDepartments,getIdByNameDepartment};
+
+  module.exports = {getDepartments,getIdByNameDepartment,getNamesDepartments};

@@ -9,6 +9,9 @@
     <h1>Employees Page</h1>
     <h2 id="name"></h2>
     <br>
+    <button onclick="addNewEmployee()">Add Employee</button>
+    <br>
+    <h3>Emloyees: </h3>
     <table id="table" border="1">
         <tr>
             <th>Full Name</th>
@@ -29,10 +32,13 @@
         </table>
         <button onclick="closePopup()">Close</button>
     </div>
-    
+
     <script>
         const url = 'http://localhost:8000/employees';
 
+        function addNewEmployee(){
+            window.location.href = "./addEmployee.html"
+        }
         function addEmployeesToTable(result) {
             const table = document.getElementById("table");
             const { employees, employeesWithShifts, departments } = result;

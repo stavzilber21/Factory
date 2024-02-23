@@ -13,5 +13,10 @@ const addShiftToEmployee = (employeeID, shiftID) =>{
     return employeeShiftRep.addShiftToEmployee(employeeID,shiftID);
 }
 
+const addEmployeeAndShifts = (obj) => {
+    return employeeShiftRep.addEmployeeAndShifts(obj);
+}
 
-module.exports = { getShiftsByEmployeesId ,addShiftToEmployee}
+
+
+module.exports = { getShiftsByEmployeesId ,addShiftToEmployee,addEmployeeAndShifts}
