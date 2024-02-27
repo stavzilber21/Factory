@@ -22,5 +22,9 @@ const addEmployee = async (obj) => {
   return {'employeeID' : employee._id}; 
 }
 
+const changeDepartmentOfEmployee = (employeeID,departmentID)=>{
+  return Employee.findByIdAndUpdate(employeeID, { departmentID });
+}
 
-module.exports = {getAllEmployees,updateEmployee,deleteEmployee,addEmployee};
+
+module.exports = {getAllEmployees,updateEmployee,deleteEmployee,addEmployee,changeDepartmentOfEmployee};

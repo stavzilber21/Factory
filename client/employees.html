@@ -65,6 +65,12 @@
                     const names = departments.map(dep => dep.name);
                     window.location.href = "./editEmployee.html?firstName=" + emp.firstName + "&lastName=" + emp.lastName + "&year=" + emp.startWorkYear +"&department="+nameDepartment+ "&id=" + emp._id + "&names=" + names;
                 });
+
+                emptdDepartment.addEventListener("click", function() {
+                    window.location.href = "./editDepartment.html?&department=" + nameDepartment;
+                }
+
+                )
      
                 empTdName.innerText = emp.firstName + ' ' + emp.lastName;
                 emptdDepartment.innerText = nameDepartment;
@@ -134,7 +140,7 @@
                 method: 'GET',
                 headers: { 'x-access-token': token },
             });
-
+            
             const result = await resp.json();
             addEmployeesToTable(result);
         }

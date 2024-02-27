@@ -7,9 +7,6 @@ router.post("/login", async (req,res) => {
     const {username, email} = req.body
     const result = await userService.getUserByUsername(username,email);
     res.send(result);
-    // Extract token from the result
-    // const { token } = result;
-    // return res.json({token})
 })
 
 module.exports = router

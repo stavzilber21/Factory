@@ -5,7 +5,8 @@ const router = express.Router()
 
 router.get("/", async (req,res) => {
     try {
-        const result = await employeeService.getAllEmployees();
+       const token = req.headers['x-access-token']
+        const result = await employeeService.getAllEmployees(token);
         res.send(result);
       } catch (error) {
         res.send(error);
@@ -34,6 +35,19 @@ router.put('/:id', async (req, res) => {
     res.send(error);
   }
 });
+
+// Update a department of employee
+router.put('/:employeeID/changeDepartment', async (req, res) => {
+  try {
+    const employeeID = req.params.employeeID;
+    const { departmentID } = req.body;
+    const result = await employeeService.changeDepartmentOfEmployee(employeeID,departmentID);
+    res.send(result);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
 
 // Delete a employee
 router.delete('/:id', async (req, res) => {

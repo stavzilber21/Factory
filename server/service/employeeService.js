@@ -2,19 +2,41 @@ const employeesRep = require('../repositories/employeeRep');
 const departmentRep = require('../repositories/departmentRep');
 const shiftRep = require('../repositories/shiftRep');
 const employeeShiftRep = require('../repositories/employeeShiftRep');
+const jwt = require("jsonwebtoken")
 
 
-const getAllEmployees = async () => {
-  const employees = await employeesRep.getAllEmployees();
-  const shiftsPromises = employees.map(async emp => {
-      const shifts = await employeeShiftRep.getShiftsById(emp._id);
-      const shiftDetailsPromises = shifts.map(shift => shiftRep.getDetailsById(shift));
-      const shiftDetails = await Promise.all(shiftDetailsPromises);
-      return { employeeId: emp._id, shifts: shiftDetails };
+CheckTokenVerify = (token) => {
+  return new Promise((resolve, reject) => {
+      jwt.verify(token, "secret", (err, data) => {
+          if (err) {
+              console.log('Error verifying token:', err.message);
+              resolve(false);
+          } else {
+              // console.log('Successfully verified the token!');
+              resolve(true);
+          }
+      });
   });
-  const departments = await departmentRep.getDepartments();
-  const employeesWithShifts = await Promise.all(shiftsPromises);
-  return { employees, employeesWithShifts, departments };
+};
+
+
+const getAllEmployees = async (token) => {
+  if (CheckTokenVerify(token)) {
+    const employees = await employeesRep.getAllEmployees();
+    const shiftsPromises = employees.map(async emp => {
+        const shifts = await employeeShiftRep.getShiftsById(emp._id);
+        const shiftDetailsPromises = shifts.map(shift => shiftRep.getDetailsById(shift));
+        const shiftDetails = await Promise.all(shiftDetailsPromises);
+        return { employeeId: emp._id, shifts: shiftDetails };
+    });
+    const departments = await departmentRep.getDepartments();
+    const employeesWithShifts = await Promise.all(shiftsPromises);
+    return { employees, employeesWithShifts, departments };
+  }
+  return {
+        "access": false,
+        "response": "Error, Token not verify!"
+    }
 };
 
 const getIdByNameDepartment = (name) => {
@@ -29,14 +51,21 @@ const updateEmployee = async(id, obj) => {
   };
 
   const deleteEmployee = async(id) => {
+    //change the manager to null
+    const man_null = await departmentRep.changeManagerNull(id);
     // delete the shifts of this employee
     const answer = await employeeShiftRep.deleteEmployeeShifts(id); 
     //delete the employee from employees colletion
     const result = await employeesRep.deleteEmployee(id);
     return { 'response': 'deleted' }
   };
+
   const addEmployee = (obj) => {
     return employeesRep.addEmployee(obj);
   };
 
-  module.exports = {getAllEmployees,updateEmployee,getIdByNameDepartment,deleteEmployee,addEmployee};
+  const changeDepartmentOfEmployee = async(employeeID,departmentID)=>{
+    return employeesRep.changeDepartmentOfEmployee(employeeID,departmentID);
+  }
+
+  module.exports = {getAllEmployees,updateEmployee,getIdByNameDepartment,deleteEmployee,addEmployee,changeDepartmentOfEmployee};

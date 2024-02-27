@@ -4,11 +4,47 @@ const router = express.Router()
 
 router.get("/", async (req,res) => {
     try {
-        const result = await departmentService.getDepartments();
+        const token = req.headers['x-access-token']
+        const result = await departmentService.getDepartments(token);
         res.send(result);
       } catch (error) {
         res.send(error);
       }
 })
+
+//get the department deailts by name
+router.get("/:name", async (req,res) => {
+  try {
+    const { name } = req.params;
+      const token = req.headers['x-access-token']
+      const result = await departmentService.getdepartmentByName(token,name);
+      res.send(result);
+    } catch (error) {
+      res.send(error);
+    }
+})
+
+// Update a department
+router.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const obj = req.body;
+    const result = await departmentService.updateDepartment(id,obj);
+    res.send(result);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
+// Delete a department
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await departmentService.deleteDepartment(id);
+    res.send(result);
+  } catch (error) {
+    res.send(error);
+  }
+});
 
 module.exports = router
