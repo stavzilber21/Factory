@@ -6,6 +6,10 @@
 
 </head>
 <body onload="getEmployees()">
+    <div id="links">
+        <a href="#" onclick="disconnect()">Disconnect</a> |
+        <a href="home.html">Home</a>
+    </div>
     <h1>Employees Page</h1>
     <h2 id="name"></h2>
     <br>
@@ -20,6 +24,9 @@
         </tr>
     </table>
     <Br>
+
+    <label for="filter">Filter Department:</label><br>
+    <select id="filter" name="filter"></select><br><br>
 
     <div class="popup" id="popup">
         
@@ -62,11 +69,13 @@
                 //^Find the name's department of the current employee by matching employee IDs
 
                 empTdName.addEventListener("click", function() {
+                    sessionStorage.setItem("sourcePage", "employees");
                     const names = departments.map(dep => dep.name);
                     window.location.href = "./editEmployee.html?firstName=" + emp.firstName + "&lastName=" + emp.lastName + "&year=" + emp.startWorkYear +"&department="+nameDepartment+ "&id=" + emp._id + "&names=" + names;
                 });
 
                 emptdDepartment.addEventListener("click", function() {
+                    sessionStorage.setItem("sourcePage", "employees");
                     window.location.href = "./editDepartment.html?&department=" + nameDepartment;
                 }
 
@@ -142,6 +151,41 @@
             });
             
             const result = await resp.json();
+
+            const {departments } = result;
+
+            // Add "All" option to the dropdown menu
+            const departmentDropdown = document.getElementById('filter');
+            const allOption = document.createElement('option');
+            allOption.textContent = 'ALL';
+            allOption.value = 'ALL';
+            departmentDropdown.appendChild(allOption);
+
+            //get the names departments to filter employees
+            departments.forEach(dep => {
+                const option = document.createElement('option');
+                option.textContent = dep.name;
+                option.value = dep.name;
+                departmentDropdown.add(option);
+            })
+            
+            //Filtering the employees from the selected department
+            document.getElementById('filter').addEventListener('change', function() {
+                const selectedDepartment = this.value;
+                const tableRows = document.getElementById('table').getElementsByTagName('tr');
+
+                for (let i = 1; i < tableRows.length; i++) {
+                    const departmentCell = tableRows[i].getElementsByTagName('td')[1]; // Assuming department cell is the second cell
+
+                    if (departmentCell.textContent === selectedDepartment || selectedDepartment === 'ALL') {
+                        tableRows[i].style.display = ''; // Show row
+                    } else {
+                        tableRows[i].style.display = 'none'; // Hide row
+                    }
+                }
+            });
+
+            //display the employees in table
             addEmployeesToTable(result);
         }
     </script>

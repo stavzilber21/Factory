@@ -5,6 +5,10 @@ const getAllEmployees = () => {
     return Employee.find();
   };
 
+const getEmployeeById = (id)=>{
+   return Employee.findById(id);
+}
+
 // Update
 const updateEmployee =(id, obj) => {
     return Employee.findByIdAndUpdate(id, obj);
@@ -27,4 +31,4 @@ const changeDepartmentOfEmployee = (employeeID,departmentID)=>{
 }
 
 
-module.exports = {getAllEmployees,updateEmployee,deleteEmployee,addEmployee,changeDepartmentOfEmployee};
+module.exports = {getAllEmployees,updateEmployee,deleteEmployee,addEmployee,changeDepartmentOfEmployee,getEmployeeById};

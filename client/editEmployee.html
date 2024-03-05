@@ -235,6 +235,8 @@
         if (!token) {
             window.location.href = "./login.html";
         }
+         // Get the source page from session storage
+        const sourcePage = sessionStorage.getItem("sourcePage");
         const resp = await fetch("http://localhost:8000/employees/" + id, {
             method: "PUT",
             headers: {
@@ -246,8 +248,16 @@
             })
         });
         const response = await resp.json();
-        location.href = "./employees.html"; 
-    }
+        // Redirect based on the source page
+        if (sourcePage === "employees") {
+            location.href = "./employees.html";
+        } else if (sourcePage === "departments") {
+            location.href = "./departments.html";
+        } else {
+            // Default redirect
+            location.href = "./employees.html";
+        }
+        }
 </script>
 </body>
 </html>

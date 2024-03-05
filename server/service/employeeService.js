@@ -38,11 +38,26 @@ const getAllEmployees = async (token) => {
         "response": "Error, Token not verify!"
     }
 };
+const getEmployeeById = async (id,token)=>{
+  if (CheckTokenVerify(token)) {
+    return employeesRep.getEmployeeById(id);
+  }
+  return {
+    'access': false,
+    "response": 'Error, inValid token!'
+  }
+}
+
 
 const getIdByNameDepartment = (name) => {
   return departmentRep.getIdByNameDepartment(name);
 }
 
+const filterEmployeesByDepartment = async(departmentID)=>{
+  const employees = await employeesRep.getAllEmployees();
+  const filter_emloyees = employees.filter(emp => emp.departmentID===departmentID);
+  return filter_emloyees;
+}
 const updateEmployee = async(id, obj) => {
   const departmentID =await getIdByNameDepartment(obj.departmentID);
   obj.departmentID= departmentID;
@@ -68,4 +83,4 @@ const updateEmployee = async(id, obj) => {
     return employeesRep.changeDepartmentOfEmployee(employeeID,departmentID);
   }
 
-  module.exports = {getAllEmployees,updateEmployee,getIdByNameDepartment,deleteEmployee,addEmployee,changeDepartmentOfEmployee};
+  module.exports = {getAllEmployees,updateEmployee,getIdByNameDepartment,deleteEmployee,addEmployee,changeDepartmentOfEmployee,getEmployeeById,filterEmployeesByDepartment };

@@ -35,6 +35,9 @@
                 const employeeID = selectedOption.getAttribute("employeeID");
                 const departmentID = selectedOption.getAttribute("departmentID");
 
+                // Get the source page from session storage
+                const sourcePage = sessionStorage.getItem("sourcePage");
+
                 const token = sessionStorage['token'];
                 const resp = await fetch(`http://localhost:8000/employees/${employeeID}/changeDepartment`, {
                     method: 'PUT',
@@ -45,7 +48,14 @@
                     body: JSON.stringify({ departmentID })
                 });
                 const result = await resp.json();
-                location.href = "./employees.html";
+                if (sourcePage === "employees") {
+                    location.href = "./employees.html";
+                } else if (sourcePage === "departments") {
+                    location.href = "./departments.html";
+                } else {
+                    // Default redirect
+                    location.href = "./employees.html";
+                }
             }
 
             async function selectAddEmployee(){
@@ -85,6 +95,10 @@
                 const name = getQueryParam('department');
                 const token = sessionStorage['token'];
 
+                
+                // Get the source page from session storage
+                const sourcePage = sessionStorage.getItem("sourcePage");
+
                 //Get all the data of the current department
                 const respDep = await fetch("http://localhost:8000/departments/"+name, {
                     method: 'GET',
@@ -102,7 +116,14 @@
                 });
                 const response = await respDelDep.json();
                 console.log("deleted");
-                location.href = "./employees.html";
+                if (sourcePage === "employees") {
+                    location.href = "./employees.html";
+                } else if (sourcePage === "departments") {
+                    location.href = "./departments.html";
+                } else {
+                    // Default redirect
+                    location.href = "./employees.html";
+                }
             }
 
          async function getData() {
@@ -171,6 +192,8 @@
             if (!token) {
                 window.location.href = "./login.html";
             }
+            // Get the source page from session storage
+            const sourcePage = sessionStorage.getItem("sourcePage");
 
             const resp = await fetch("http://localhost:8000/departments/" + id, {
                 method: "PUT",
@@ -185,7 +208,14 @@
             
             const response = await resp.json();
             
-            location.href = "./employees.html";
+            if (sourcePage === "employees") {
+                location.href = "./employees.html";
+            } else if (sourcePage === "departments") {
+                location.href = "./departments.html";
+            } else {
+                // Default redirect
+                location.href = "./employees.html";
+            }
         }
 
         function getQueryParam(name) {

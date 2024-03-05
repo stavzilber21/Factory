@@ -13,6 +13,43 @@ router.get("/", async (req,res) => {
       }
 })
 
+// router.get("/employee/:id", async (req,res) => {
+//   try {
+//      const { id } = req.params;
+//      const token = req.headers['x-access-token']
+//       const result = await employeeService.getEmployeeById(id,token);
+//       res.send(result);
+//     } catch (error) {
+//       res.send(error);
+//     }
+// })
+router.get("/employee/:id", async (req, res) => {
+  try {
+      const { id } = req.params;
+      const token = req.headers['x-access-token']
+      const result = await employeeService.getEmployeeById(id, token);
+      res.send(result);
+  } catch (error) {
+      // Handle specific error statuses
+      if (error.status === 404) {
+          res.status(404).send("Employee not found");
+      } else {
+          console.error("Error fetching employee:", error);
+          res.status(500).send("Internal Server Error");
+      }
+  }
+});
+
+router.get("/filterDep/:departmentID", async (req,res) => {
+  try {
+    const { departmentID } = req.params;
+      const result = await employeeService.filterEmployeesByDepartment(departmentID);
+      res.send(result);
+    } catch (error) {
+      res.send(error);
+    }
+})
+
 router.get("/:department", async (req,res) => {
   try {
     const { department } = req.params;

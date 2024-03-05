@@ -47,4 +47,15 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+// Add a new department
+router.post('/', async (req, res) => {
+  try {
+    const obj = req.body;
+    const result = await departmentService.addDepartment(obj);
+    res.status(201).send(result);
+  } catch (error) {
+    res.send(error);
+  }
+});
+
 module.exports = router

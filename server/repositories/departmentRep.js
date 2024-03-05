@@ -60,5 +60,12 @@ const deleteDepartment = (id) => {
   return Department.findByIdAndDelete(id);
 };
 
+// Create
+const addDepartment = async (obj) => {
+  const department = new Department(obj);
+  await department.save();
+  return {'departmentID' : department._id}; 
+}
 
-  module.exports = {getDepartments,getIdByNameDepartment,getNamesDepartments,getdepartmentByName,updateDepartment,changeManagerNull,deleteDepartment};
+
+  module.exports = {getDepartments,getIdByNameDepartment,getNamesDepartments,getdepartmentByName,updateDepartment,changeManagerNull,deleteDepartment,addDepartment};

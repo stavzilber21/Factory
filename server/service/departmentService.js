@@ -54,6 +54,10 @@ const deleteDepartment = async (id)=>{
     return { 'response': 'deleted' };
 }
 
+const addDepartment = (obj) => {
+    return departmentRep.addDepartment(obj);
+  };
 
 
-module.exports = { getDepartments,getdepartmentByName,updateDepartment,deleteDepartment}
+
+module.exports = { getDepartments,getdepartmentByName,updateDepartment,deleteDepartment,addDepartment}

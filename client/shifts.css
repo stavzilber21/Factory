@@ -6,6 +6,31 @@
     display: none;
     cursor: pointer;
 }
+#table_employees th {
+    display: none;
+    cursor: pointer;
+}
+/* CSS styles for the links */
+#links {
+    padding: 10px;
+    background-color: #f0f0f0;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#links a {
+    color: #333;
+    text-decoration: none;
+    padding: 5px 10px;
+    margin: 0 5px;
+    border-radius: 5px;
+    background-color: #ddd;
+    transition: background-color 0.3s ease;
+}
+
+#links a:hover {
+    background-color: #bbb;
+}
 
  /* Container styling */
  .form-container {
@@ -29,6 +54,10 @@ input[type="text"], select {
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+}
+
+#filter{
+    width: 10%;
 }
 
 input[type="submit"], button {
