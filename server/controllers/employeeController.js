@@ -16,8 +16,7 @@ router.get("/", async (req,res) => {
 router.get("/employee/:id", async (req,res) => {
   try {
      const { id } = req.params;
-     const token = req.headers['x-access-token']
-      const result = await employeeService.getEmployeeById(id,token);
+      const result = await employeeService.getEmployeeById(id);
       res.send(result);
     } catch (error) {
       res.send(error);

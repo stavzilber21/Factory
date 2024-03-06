@@ -58,4 +58,15 @@ router.post('/', async (req, res) => {
   }
 });
 
+//change manager to null - if the employee change department
+router.patch("/", async (req,res) =>{
+  try {
+    const { employeeID, departmentID } = req.body;
+    const result = await departmentService.changeManagerNull(employeeID,departmentID);
+    res.send(result);
+  } catch (error) {
+    res.send(error);
+  }
+})
+
 module.exports = router

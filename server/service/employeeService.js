@@ -38,15 +38,10 @@ const getAllEmployees = async (token) => {
         "response": "Error, Token not verify!"
     }
 };
-const getEmployeeById = async (id,token)=>{
-  if (CheckTokenVerify(token)) {
+const getEmployeeById = async (id)=>{
     return employeesRep.getEmployeeById(id);
   }
-  return {
-    'access': false,
-    "response": 'Error, inValid token!'
-  }
-}
+
 
 
 const getIdByNameDepartment = (name) => {
@@ -66,8 +61,14 @@ const updateEmployee = async(id, obj) => {
   };
 
   const deleteEmployee = async(id) => {
-    //change the manager to null
-    const man_null = await departmentRep.changeManagerNull(id);
+    const employee =await getEmployeeById(id);
+    const departments = await departmentRep.getDepartments();
+    const department = departments.find(dep => dep._id.toString() === employee.departmentID);
+    //if this employee manager his department
+    if(department.manager===id){
+      //change the manager to null
+      const man_null = await departmentRep.changeManagerNull(department);
+    }
     // delete the shifts of this employee
     const answer = await employeeShiftRep.deleteEmployeeShifts(id); 
     //delete the employee from employees colletion

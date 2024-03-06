@@ -58,6 +58,17 @@ const addDepartment = (obj) => {
     return departmentRep.addDepartment(obj);
   };
 
+//when employee change department -change the manager of the old department is null
+const changeManagerNull=async (employeeID,departmentID)=>{
+    const departments = await departmentRep.getDepartments();
+    const department = departments.find(dep => dep._id.toString() === departmentID);
+    if(department.manager===employeeID){
+        const man_null = await departmentRep.changeManagerNull(department);
+        return { 'response': 'deleted' };
+    }
+    return { 'response': '--' };
+}
 
+    
 
-module.exports = { getDepartments,getdepartmentByName,updateDepartment,deleteDepartment,addDepartment}
+module.exports = { getDepartments,getdepartmentByName,updateDepartment,deleteDepartment,addDepartment,changeManagerNull}

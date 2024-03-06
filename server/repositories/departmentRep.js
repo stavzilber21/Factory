@@ -26,23 +26,48 @@ const getdepartmentByName =async(name)=>{
     }
     return department;
 }
-
-const changeManagerNull = async(manager)=>{
+//when I delete employee / pass him to other department - 
+//check if he is the manager of his department - and change manager to null
+const changeManagerNull = async (department) => {
   try {
-    // Find all departments
-    const departments = await Department.find();
-    // Filter departments where the manager is like the given manager
-    const departmentsToUpdate = departments.filter(dep => dep.manager === manager);
-    // Update the manager to null for each department found
-    for (const department of departmentsToUpdate) {
-      department.manager = null;
-      await department.save();
-    }
-    // console.log("Managers updated successfully.");
+    // console.log(departmentID);
+    // const departments = await Department.find();
+    // console.log(departments);
+    // const department = departments.find(dep => dep._id === departmentID);
+    // console.log(department);
+    // if (!department) {
+    //   console.error("Department not found.");
+    //   return; 
+    // }
+    // console.log("!111111");
+    department.manager = null;
+    await department.save();
+    // console.log("Manager updated successfully.");
   } catch (error) {
-    console.error("Error occurred while updating managers:", error);
+    console.error("Error occurred while updating manager:", error);
   }
-}
+};
+
+
+// const changeManagerNull = async(manager)=>{
+//   try {
+//     // Find all departments
+//     const departments = await Department.find();
+//     // Filter departments where the manager is like the given manager
+//     const departmentsToUpdate = departments.filter(dep => dep.manager === manager);
+//     // Update the manager to null for each department found
+//     for (const department of departmentsToUpdate) {
+//       department.manager = null;
+//       await department.save();
+//     }
+//     // console.log("Managers updated successfully.");
+//   } catch (error) {
+//     console.error("Error occurred while updating managers:", error);
+//   }
+// }
+
+
+
 
 const getNamesDepartments =async ()=>{
   const departments =await Department.find();

@@ -34,6 +34,9 @@
                 const selectedOption = employeeToAdd.options[employeeToAdd.selectedIndex];
                 const employeeID = selectedOption.getAttribute("employeeID");
                 const departmentID = selectedOption.getAttribute("departmentID");
+                const oldDepartment = selectedOption.getAttribute("oldDepartment");
+
+                const changeManager = await changeManagerNullIfHePassDepartment(employeeID,oldDepartment);
 
                 // Get the source page from session storage
                 const sourcePage = sessionStorage.getItem("sourcePage");
@@ -56,6 +59,21 @@
                     // Default redirect
                     location.href = "./employees.html";
                 }
+            }
+
+            
+            async function changeManagerNullIfHePassDepartment(employeeID,departmentID){
+                const token = sessionStorage['token'];
+                const resp = await fetch("http://localhost:8000/departments", {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-access-token": token
+                },
+                body: JSON.stringify({
+                    employeeID,departmentID
+                })
+            });
             }
 
             async function selectAddEmployee(){
@@ -84,6 +102,7 @@
                         option.textContent = emp.firstName + ' ' + emp.lastName;
                         option.value = emp.firstName + ' ' + emp.lastName;
                         option.setAttribute("employeeID", emp._id);
+                        option.setAttribute("oldDepartment", emp.departmentID);
                         option.setAttribute("departmentID",id);
                         addEmployeeDropdown.add(option);
                     }
