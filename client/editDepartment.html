@@ -61,7 +61,7 @@
                 }
             }
 
-            
+            //If employee pass the other department
             async function changeManagerNullIfHePassDepartment(employeeID,departmentID){
                 const token = sessionStorage['token'];
                 const resp = await fetch("http://localhost:8000/departments", {

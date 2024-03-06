@@ -71,7 +71,7 @@
                 empTdName.addEventListener("click", function() {
                     sessionStorage.setItem("sourcePage", "employees");
                     const names = departments.map(dep => dep.name);
-                    window.location.href = "./editEmployee.html?firstName=" + emp.firstName + "&lastName=" + emp.lastName + "&year=" + emp.startWorkYear +"&department="+nameDepartment+ "&id=" + emp._id + "&names=" + names;
+                    window.location.href = "./editEmployee.html?firstName=" + emp.firstName + "&lastName=" + emp.lastName + "&year=" + emp.startWorkYear +"&department="+nameDepartment+ "&id=" + emp._id;
                 });
 
                 emptdDepartment.addEventListener("click", function() {

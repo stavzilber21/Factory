@@ -150,26 +150,35 @@
         const firstName = getQueryParam('firstName');
         const lastName = getQueryParam('lastName');
         const year = getQueryParam('year');
-        const department = getQueryParam('department');
+        const department = getQueryParam('department'); //the name of department
         
         // Populate form fields with employee data
         document.getElementById('firstName').value = firstName;
         document.getElementById('lastName').value = lastName;
         document.getElementById('year').value = year;
 
+        const token = sessionStorage['token'];
+
         const departmentDropdown = document.getElementById('department');
-        const departmentNames = getQueryParam('names');
-        
-        if (departmentNames) {
-            departmentNames.split(',').forEach(name => {
-                const option = document.createElement('option');
-                option.textContent = name;
-                option.value = name;
-                departmentDropdown.add(option);
+        //get the name departments to select
+        const respDep = await fetch('http://localhost:8000/departments', {
+                method: 'GET',
+                headers: { 'x-access-token': token },
             });
-            departmentDropdown.value = department;
             
-        }
+        const departments = await respDep.json();
+        departments.forEach(dep=>{
+            const option = document.createElement('option');
+            option.textContent = dep.name;
+            option.value = dep.name;
+            departmentDropdown.add(option);
+
+            if(dep.name === department){
+                departmentDropdown.setAttribute('oldDepartmentId', dep._id);
+            }
+        })
+        departmentDropdown.value = department;
+
         
         // Add event listener for form submission
         const form = document.getElementById("editForm");
@@ -180,7 +189,7 @@
 
         //for to add a new shift to employee
         const id = getQueryParam('id');
-        const token = sessionStorage['token'];
+
 
         if (!token) {
                 window.location.href = "./login.html"
@@ -235,7 +244,20 @@
         const firstName = document.getElementById('firstName').value;
         const lastName= document.getElementById('lastName').value;
         const startWorkYear = document.getElementById('year').value;
+
+        //here this is the name of department - and in the service this is change to the departmentID
         const departmentID = document.getElementById('department').value;
+
+        // Get the original name department value from the URL parameter
+        const originalDepartment = getQueryParam('department');
+
+        // Check if another department is selected - The comparison is of the departments names
+        //we need to check if this employee was the manager in originalDepartment 
+        if (departmentID !== originalDepartment) {
+            const departmentDropdown = document.getElementById('department');
+            const oldDepartmentId = departmentDropdown.getAttribute('oldDepartmentId');
+            const changeManager = await changeManagerNullIfHePassDepartment(id ,oldDepartmentId);
+        }
 
         const token = sessionStorage.getItem("token");
         if (!token) {
@@ -263,7 +285,22 @@
             // Default redirect
             location.href = "./employees.html";
         }
-        }
+    }
+
+    //If employee pass the other department
+    async function changeManagerNullIfHePassDepartment(employeeID,departmentID){
+        const token = sessionStorage['token'];
+        const resp = await fetch("http://localhost:8000/departments", {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            "x-access-token": token
+        },
+        body: JSON.stringify({
+            employeeID,departmentID
+        })
+    });
+    }
 </script>
 </body>
 </html>
