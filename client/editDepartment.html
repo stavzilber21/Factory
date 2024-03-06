@@ -115,7 +115,6 @@
                     }
                 });
                 const response = await respDelDep.json();
-                console.log("deleted");
                 if (sourcePage === "employees") {
                     location.href = "./employees.html";
                 } else if (sourcePage === "departments") {
@@ -162,6 +161,7 @@
             });
             const result = await resp.json();
             const { employees } = result;
+            //for change manager for this department
             const managersDropdown = document.getElementById('manager');
             employees.forEach(emp =>{
                 //the manager can be just employee from this department.

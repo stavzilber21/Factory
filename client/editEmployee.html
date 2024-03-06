@@ -82,7 +82,11 @@
                 const shiftDateCell = document.createElement("td");
                 const shiftStartTimeCell = document.createElement("td");
                 const shiftEndTimeCell = document.createElement("td");
-                shiftDateCell.textContent = shift.date;
+
+                // Extracting the date part in "YYYY-MM-DD" format
+                const shiftDate = new Date(shift.date).toISOString().split('T')[0];
+
+                shiftDateCell.textContent = shiftDate;
                 shiftStartTimeCell.textContent = shift.startingHour;
                 shiftEndTimeCell.textContent = shift.endingHour;
                 shiftRow.appendChild(shiftDateCell);
@@ -192,7 +196,9 @@
         if(hisNotShifts){
            hisNotShifts.forEach(shift =>{
             const option = document.createElement('option');
-                option.textContent ="Date: "+ shift.date+ " | Hours: "+ shift.startingHour + " - "+ shift.endingHour;
+            // Extracting the date part in "YYYY-MM-DD" format
+            const shiftDate = new Date(shift.date).toISOString().split('T')[0];
+                option.textContent ="Date: "+ shiftDate+ " | Hours: "+ shift.startingHour + " - "+ shift.endingHour;
                 option.value ="Date: "+  shift.date+ " | Hours: "+ shift.startingHour + " - "+ shift.endingHour;
                 option.setAttribute("shiftId", shift._id);
                 shiftsDropdown.add(option);
@@ -209,7 +215,7 @@
         if (!token) {
             window.location.href = "./login.html";
         }
-        const resp = await fetch("http://localhost:8000/shifts" , {
+        const resp = await fetch("http://localhost:8000/employeeShift" , {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",

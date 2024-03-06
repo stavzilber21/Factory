@@ -106,7 +106,11 @@
                 const shiftDateCell = document.createElement("td");
                 const shiftStartTimeCell = document.createElement("td");
                 const shiftEndTimeCell = document.createElement("td");
-                shiftDateCell.textContent = shift.date;
+
+                // Extracting the date part in "YYYY-MM-DD" format
+                const shiftDate = new Date(shift.date).toISOString().split('T')[0];
+
+                shiftDateCell.textContent = shiftDate;
                 shiftStartTimeCell.textContent = shift.startingHour;
                 shiftEndTimeCell.textContent = shift.endingHour;
                 shiftRow.appendChild(shiftDateCell);

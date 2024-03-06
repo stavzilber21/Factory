@@ -1,5 +1,11 @@
 const eShift =  require('../models/employeeShiftModel');
 
+// Get All
+const getAllEmployeesAndShifts = () => {
+  return eShift.find();
+};
+
+//get the shifts of specific employee
 const getShiftsById = async (employeeID) => {
     const emp = await eShift.findOne({"employeeID": employeeID});
     const shifts = emp.shifts;
@@ -35,4 +41,4 @@ const addEmployeeAndShifts = (obj) => {
   return employee.save();
 }
 
-module.exports = {getShiftsById,deleteEmployeeShifts,addShiftToEmployee,addEmployeeAndShifts};
+module.exports = {getShiftsById,deleteEmployeeShifts,addShiftToEmployee,addEmployeeAndShifts,getAllEmployeesAndShifts};

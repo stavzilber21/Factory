@@ -14,4 +14,16 @@ const getDetailsById = async (_id) => {
     }
 }
 
-module.exports ={getShifts,getDetailsById};
+// Create
+const addShift = async (obj) => {
+    const shift= new Shift(obj);
+    await shift.save();
+    return {'shiftID' : shift._id}; 
+  }
+
+  // Update
+const updateShift =(id, obj) => {
+    return Shift.findByIdAndUpdate(id, obj);
+};
+
+module.exports ={getShifts,getDetailsById,addShift,updateShift};
