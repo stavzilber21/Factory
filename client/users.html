@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Users page</title>
+    <link rel="stylesheet" href="shifts.css">
+</head>
+
+<body onload="getUsers()">
+    <h1>Users Page</h1>
+    <h2 id="name"></h2>
+    <br>
+    <h3>Users: </h3>
+    <table id="table" border="1">
+        <tr>
+            <th>Full Name</th>
+            <th>Max Actions</th>
+            <th>Number of Actions</th>
+        </tr>
+    </table>
+    <Br>
+    <script>
+        async function addUsersToTable(users){
+            const table = document.getElementById("table");
+            for(const user of users){
+                const userTr = document.createElement("tr");
+                const userTdFullName = document.createElement("td");
+                const usertdMaxAction = document.createElement("td");
+                const usertdnumAction = document.createElement("td");
+                userTdFullName.innerText= user.fullname;
+                usertdMaxAction.innerText = user.numOfAction;
+
+                userTr.appendChild(userTdFullName);
+                userTr.appendChild(usertdMaxAction);
+                userTr.appendChild(usertdnumAction);
+                table.appendChild(userTr);
+            }
+        }
+        async function getUsers() {
+            const username = sessionStorage.getItem("name")
+            document.getElementById("name").innerText = username;
+            const token = sessionStorage['token'];
+
+            const resp = await fetch('http://localhost:8000/auth', {
+                method: 'GET',
+                headers: { 'x-access-token': token },
+            });
+            
+            const users = await resp.json();
+            addUsersToTable(users);
+        }
+    </script>
+</body>
+</html>

@@ -5,5 +5,9 @@ const getAllUsers = () => {
     return User.find();
   };
 
+const getUserByFullName=async(fullname)=>{
+  return await User.findOne({"fullname": fullname});
+}
 
-  module.exports = {getAllUsers};
+
+  module.exports = {getAllUsers,getUserByFullName};
