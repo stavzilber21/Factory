@@ -8,9 +8,9 @@ router.get("/:shiftID", async (req,res) => {
   try {
       const { shiftID } = req.params;
       const result = await shiftsService.filterEmloyeesNotInShift(shiftID);
-      res.send(result);
+      return res.send(result);
     } catch (error) {
-      res.send(error);
+      return res.send(error);
     }
 })
 // Add a new employee to employeeShifts
@@ -18,9 +18,9 @@ router.post('/', async (req, res) => {
     try {
       const obj = req.body;
       const result = await shiftsService.addEmployeeAndShifts(obj);
-      res.status(201).send(result);
+      return res.status(201).send(result);
     } catch (error) {
-      res.send(error);
+      return res.send(error);
     }
   });
 
@@ -29,9 +29,9 @@ router.patch("/", async (req,res) =>{
   try {
     const { employeeID, shiftID } = req.body;
     const result = await shiftsService.addShiftToEmployee(employeeID,shiftID);
-    res.send(result);
+    return res.send(result);
   } catch (error) {
-    res.send(error);
+    return res.send(error);
   }
 })
 

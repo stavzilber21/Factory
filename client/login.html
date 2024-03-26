@@ -2,16 +2,18 @@
 <html lang="en">
 
 <head>
-    <!-- <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
     <title>Login</title>
+    <link rel="stylesheet" href="login.css">
 </head>
 
 <body>
-    <h1>Hello, Please Login: </h1>
-    <input id="username" type="text" value="Bret" placeholder="username"> <br>
-    <input id="email" type="email" value="Sincere@april.biz" placeholder="email"> <br>
-    <button onclick="login()">Login</button>
+    <div class="container">
+        <h1>Hello, Please Login:</h1>
+        <input id="username" type="text" value="Bret" placeholder="Username"> <br>
+        <input id="email" type="email" value="Sincere@april.biz" placeholder="Email"> <br>
+        <button onclick="login()">Login</button>
+        <p id="error-msg" class="error"></p>
+    </div>
 
     <script>
 
@@ -36,6 +38,8 @@
                 // Token is valid
                 sessionStorage.setItem("token", status.token);
                 sessionStorage.setItem("name", username);
+                sessionStorage.setItem("id", status.userId)
+                // sessionStorage.setItem("currentDate", status.date)
                 window.location.href = "./home.html";
             } else {
                 // Token is not valid or not received

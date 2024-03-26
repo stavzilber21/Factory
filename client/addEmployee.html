@@ -30,7 +30,6 @@
             <button onclick="cancel()">Cancel</button>
         </div>
         <script>
-            const url = 'http://localhost:8000/departments';
                 async function cancel(){
                     location.href = "./employees.html"; 
                 }
@@ -44,7 +43,7 @@
                     if (!token) {
                             window.location.href = "./login.html"
                     }
-                    const resp = await fetch(url, {
+                    const resp = await fetch("http://localhost:8000/departments/notAction", {
                         method: 'GET',
                         headers: { 'x-access-token': token },
                     });
@@ -94,6 +93,11 @@
                         })
                     });
                     const response = await resp.json();
+                    if(response==false){
+                        alert("Action not allowed - come back tomorrow");
+                        sessionStorage.clear();
+                        window.location.href = "./login.html"
+                    }
                     const {employeeID} = response;
             
                     const shifts = [];

@@ -7,7 +7,7 @@
 </head>
 <body onload="getEmployees()">
     <div id="links">
-        <a href="#" onclick="disconnect()">Disconnect</a> |
+        <a href="#" onclick="logOut()">Disconnect</a> |
         <a href="home.html">Home</a>
     </div>
     <h1>Employees Page</h1>
@@ -41,8 +41,10 @@
     </div>
 
     <script>
-        const url = 'http://localhost:8000/employees';
-
+        async function logOut() {
+                sessionStorage.clear();
+                window.location.href = "./login.html"
+        }
         function addNewEmployee(){
             window.location.href = "./addEmployee.html"
         }
@@ -143,19 +145,29 @@
        
         async function getEmployees() {
             const username = sessionStorage.getItem("name")
+            const userId = sessionStorage.getItem("id")
+            // const currentDate = sessionStorage.getItem("currentDate")
             document.getElementById("name").innerText = username;
             const token = sessionStorage['token'];
 
             if (!token) {
                     window.location.href = "./login.html"
             }
-            const resp = await fetch(url, {
+            const resp = await fetch("http://localhost:8000/employees", {
                 method: 'GET',
-                headers: { 'x-access-token': token },
+                headers: {
+                    'x-access-token': token,
+                    'id': userId
+                },
             });
             
             const result = await resp.json();
-
+            if(result==false){
+                alert("Action not allowed - come back tomorrow");
+                sessionStorage.clear();
+                window.location.href = "./login.html"
+            }
+            
             const {departments } = result;
 
             // Add "All" option to the dropdown menu

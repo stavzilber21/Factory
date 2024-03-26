@@ -6,7 +6,7 @@
 </head>
 <body onload="getDepartments()">
     <div id="links">
-        <a href="#" onclick="disconnect()">Disconnect</a> |
+        <a href="#" onclick="logOut()">Disconnect</a> |
         <a href="home.html">Home</a>
     </div>
     <h1>Departments Page</h1>
@@ -33,6 +33,11 @@
         <button onclick="closePopup()">Close</button>
     </div>
     <script>
+        async function logOut() {
+                sessionStorage.clear();
+                window.location.href = "./login.html"
+        }
+
         function addNewDepartment(){
             window.location.href = "./addDepartment.html"
         }
@@ -141,16 +146,26 @@
         }
 
         async function getDepartments() {
-            const username = sessionStorage.getItem("name")
+            const username = sessionStorage.getItem("name");
+            const userId = sessionStorage.getItem("id");
             document.getElementById("name").innerText = username;
             const token = sessionStorage['token'];
 
             const resp = await fetch('http://localhost:8000/departments', {
                 method: 'GET',
-                headers: { 'x-access-token': token },
+                headers: {
+                    'x-access-token': token,
+                    'id': userId
+                },
             });
             
             const departments = await resp.json();
+            if(departments==false){
+                alert("Action not allowed - come back tomorrow");
+                sessionStorage.clear();
+                window.location.href = "./login.html"
+            }
+
             //display the departments in table
             addDepartmentsToTable(departments);
         }

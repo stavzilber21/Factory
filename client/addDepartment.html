@@ -56,7 +56,15 @@
                         })
                     });
                     const response = await resp.json();
-                    location.href = "./departments.html"; 
+                    if(response==false){
+                        alert("Action not allowed - come back tomorrow");
+                        sessionStorage.clear();
+                        window.location.href = "./login.html"
+                    }
+                    else{
+                        location.href = "./departments.html"; 
+                    }
+                    
             }
         </script>
     </body>

@@ -1,54 +1,57 @@
-
-nav, header, footer {
-    display: block;
-}
-
-body{
-    line-height: 1;
-    margin: 0;
-}
-
-*{
-    box-sizing: border-box;
-}
-/*Nav bar*/
-
-nav{
-    width: 100%;
-    margin: 0;
-}
-
-/* Styles for the main navigation bar */
-
-nav ul{
-    background-color: #eee;
-    overflow: hidden;
+/* Resetting default margin and padding */
+body, ul {
     margin: 0;
     padding: 0;
 }
 
-/* Styles for each list item in the navigation bar */
-ul.topnav li {
-    list-style: none;
-    float: left;
+/* Body style */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
 }
 
-/* Styles for each anchor tag within the list items */
-ul.topnav li a {
-    display: block;
-    text-decoration: none;
-    min-height: 16px;
+/* Navigation bar style */
+nav {
+    background-color: #0080ff;
+    color: #fff;
+    padding: 10px 0;
+}
+
+ul.topnav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     text-align: center;
-    padding: 14px;
-    text-transform: uppercase;
-    color: #666;
+}
+
+ul.topnav li {
+    display: inline-block;
+    margin-right: 20px; /* Adjust spacing between menu items */
+}
+
+ul.topnav li a {
+    text-decoration: none;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
 }
 
 ul.topnav li a:hover {
-    background-color: #0080ff;
-    color: #fff;
+    background-color: #0056b3;
 }
 
-ul.topnav li.dropdownIcon{
-    display: none;
+/* Update logout button style */
+ul.topnav li:last-child a {
+    background-color: #e74c3c; /* Change background color for logout button */
+}
+
+ul.topnav li:last-child a:hover {
+    background-color: #c0392b; /* Darken background color on hover */
+}
+
+/* Name style */
+h2#name {
+    text-align: center;
+    margin-top: 20px;
 }

@@ -6,6 +6,10 @@
     </head>
 </html>
 <body onload="getShifts()">
+    <div id="links">
+        <a href="#" onclick="logOut()">Disconnect</a> |
+        <a href="home.html">Home</a>
+    </div>
     <h1>Shifts Page</h1>
     <h2 id="name"></h2>
     <div class="container">
@@ -60,6 +64,11 @@
     </div>
     
 <script>
+    async function logOut() {
+                sessionStorage.clear();
+                window.location.href = "./login.html"
+        }
+        
      async function cancel(){
         location.href = "./home.html"; 
      }
@@ -114,6 +123,7 @@
         const startingHour = document.getElementById('start-time').value;
         const endingHour = document.getElementById('end-time').value;
         const token = sessionStorage.getItem("token");
+        const userId = sessionStorage.getItem("id");
         if (!token) {
             window.location.href = "./login.html";
         }
@@ -121,14 +131,23 @@
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "x-access-token": token
+                "x-access-token": token,
+                "id": userId
             },
             body: JSON.stringify({
                date,startingHour,endingHour
             })
         });
         const response = await resp.json();
-        location.href = "./home.html"; 
+        if(response==false){
+            alert("Action not allowed - come back tomorrow")
+                sessionStorage.clear();
+                window.location.href = "./login.html"
+        }
+        else{
+            location.href = "./home.html"; 
+        }
+        
      }
 
     
@@ -190,13 +209,15 @@
         const newDate = document.getElementById('date2').value;
         const newStartingHour = document.getElementById('start-time2').value;
         const newEndingHour = document.getElementById('end-time2').value;
+        const userId = sessionStorage.getItem("id");
 
         const token = sessionStorage.getItem("token");
         const resp = await fetch("http://localhost:8000/shifts/"+id ,{
             method: "PUT", // Assuming PUT method is used for updating shifts
             headers: {
                 "Content-Type": "application/json",
-                "x-access-token": token
+                "x-access-token": token,
+                "id": userId
             },
             body: JSON.stringify({
             date: newDate,
@@ -205,14 +226,21 @@
             })
         });
         const response = await resp.json();
-
-        // Check if an employee is selected
-        const selectedAdd = document.getElementById('add');
-        if (selectedAdd.selectedIndex !== -1) {
-            // If an employee is selected, add the employee to the shift
-            const addEmlpoyee = await addEmlpoyeeToShift(id);
+        if(response==false){
+            alert("Action not allowed - come back tomorrow")
+                sessionStorage.clear();
+                window.location.href = "./login.html"
         }
-        location.href = "./home.html"; 
+        else{
+            // Check if an employee is selected
+            const selectedAdd = document.getElementById('add');
+            if (selectedAdd.selectedIndex !== -1) {
+                // If an employee is selected, add the employee to the shift
+                const addEmlpoyee = await addEmlpoyeeToShift(id);
+            }
+            location.href = "./home.html"; 
+        }
+
     }
 
     //In the save function, call this - add the employee selected to shift selected

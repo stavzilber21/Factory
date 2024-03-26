@@ -7,9 +7,9 @@ router.get("/", async (req,res) => {
   try {
      const token = req.headers['x-access-token']
       const result = await shiftsService.getShifts(token);
-      res.send(result);
+      return res.send(result);
     } catch (error) {
-      res.send(error);
+      return res.send(error);
     }
 })
 
@@ -17,9 +17,9 @@ router.get("/:id", async (req,res) => {
     try {
         const { id } = req.params;
         const result = await shiftsService.getShiftsByEmployeesId(id);
-        res.send(result);
+        return res.send(result);
       } catch (error) {
-        res.send(error);
+        return res.send(error);
       }
 })
 
@@ -30,21 +30,11 @@ router.put('/:id', async (req, res) => {
     const { id } = req.params;
     const obj = req.body;
     const result = await shiftsService.updateShift(id,obj);
-    res.send(result);
+    return res.send(result);
   } catch (error) {
-    res.send(error);
+    return res.send(error);
   }
 });
-
-// router.patch("/", async (req,res) =>{
-//   try {
-//     const { employeeID, shiftID } = req.body;
-//     const result = await shiftsService.addShiftToEmployee(employeeID,shiftID);
-//     res.send(result);
-//   } catch (error) {
-//     res.send(error);
-//   }
-// })
 
 // Add a new shift
 router.post('/', async (req, res) => {
